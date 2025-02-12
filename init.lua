@@ -883,6 +883,12 @@ require('lazy').setup({
   },
   {
     'catppuccin/nvim',
+    config = function()
+      require('catppuccin').setup {
+        kitty = true,
+        transparent_background = true,
+      }
+    end,
     priority = 1000,
   },
   {
@@ -1111,7 +1117,6 @@ if hardmode then
   vim.api.nvim_set_keymap('i', '<Left>', '<C-o>' .. msg, { noremap = true, silent = false })
   vim.api.nvim_set_keymap('i', '<Right>', '<C-o>' .. msg, { noremap = true, silent = false })
   vim.api.nvim_set_keymap('i', '<Del>', '<C-o>' .. msg, { noremap = true, silent = false })
-  vim.api.nvim_set_keymap('i', '<BS>', '<C-o>' .. msg, { noremap = true, silent = false })
   vim.api.nvim_set_keymap('i', '<C-C>', '<C-o>' .. msg, { noremap = true, silent = false })
 
   -- Disable arrow keys in normal mode with a styled message
