@@ -166,9 +166,13 @@ vim.g.loaded_netrw = 1
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
+--  Custom keymaps
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>]', '<cmd>bnext<CR>')
+vim.keymap.set('n', '<leader>bd', '<cmd>bd<CR>')
+vim.keymap.set('n', '<leader>sbd', '<cmd>bp|bd #<CR>')
 vim.keymap.set('n', '<leader>[', '<cmd>bprev<CR>')
+vim.keymap.set('n', '<leader>br', '<cmd>%bd|e#<CR>')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -892,6 +896,12 @@ require('lazy').setup({
     priority = 1000,
   },
   {
+    'projekt0n/github-nvim-theme',
+    name = 'github-theme',
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+  },
+  {
     'Shatur/neovim-ayu',
     priority = 1000,
     config = function()
@@ -937,6 +947,15 @@ require('lazy').setup({
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
+      require('mini.tabline').setup()
+      require('mini.comment').setup()
+      require('mini.pairs').setup()
+      require('mini.align').setup()
+      require('mini.files').setup {
+        mappings = {
+          close = '<Esc>',
+        },
+      }
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -961,6 +980,12 @@ require('lazy').setup({
       statusline.section_location = function()
         return '%2l:%-2v'
       end
+
+      local files = require 'mini.files'
+      -- Open mini files
+      vim.keymap.set('n', '\\', function()
+        files.open(vim.api.nvim_buf_get_name(0), false)
+      end)
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
@@ -1067,7 +1092,7 @@ require('lazy').setup({
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'custom.plugins.init',
 
@@ -1102,7 +1127,7 @@ require('lazy').setup({
     },
   },
 })
-vim.cmd.colorscheme 'catppuccin-mocha'
+vim.cmd.colorscheme 'github_dark_tritanopia'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- local hardmode = true
